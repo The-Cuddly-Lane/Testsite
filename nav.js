@@ -149,6 +149,10 @@
       sheetBar(/test/i.test(title)?'test':'live',title);
     }catch(e){if(seq===_sheetSeq)sheetBar('unknown','');}
   }
+  // Text size buttons in Settings: show which one is in use
+  function markZoom(){const z=parseFloat(localStorage.getItem('tcl_zoom')||'')||(typeof getZoom==='function'?getZoom():1);document.querySelectorAll('#setupBar button[onclick^="setZoom"]').forEach(b=>{const m=(b.getAttribute('onclick')||'').match(/setZoom\(([\d.]+)\)/);b.classList.toggle('tl-on',!!m&&Math.abs(parseFloat(m[1])-z)<0.01);});}
+  if(typeof window.setZoom==='function'){const _sz=window.setZoom;window.setZoom=function(){const r=_sz.apply(this,arguments);markZoom();return r;};}
+  markZoom();
   ['refreshBoard','saveConfig'].forEach(name=>{const f=window[name];if(typeof f!=='function')return;const seen=new WeakSet();window[name]=function(){const r=f.apply(this,arguments);if(r&&typeof r==='object'){if(seen.has(r))return r;seen.add(r);}Promise.resolve(r).finally(()=>checkSheet());return r;};});
 
   function boot(){

@@ -379,3 +379,25 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 .modal [style*="font-size:11px"]{font-size:14px!important;}
 #mgModal :is([style*="font-size:8px"],[style*="font-size:9px"]){font-size:12px!important;}
 #mgModal .sbtn2{font-size:15px!important;padding:12px 22px!important;border-radius:14px!important;}
+
+/* ============================ Settings panel, modal headers, day view (option A) ============================ */
+#setupBar>div[style*="font-size:11px"]{font-size:14px!important;margin-top:6px;}
+#setupBar [style*="font-size:10px"]{font-size:13px!important;}
+#setupBar [style*="font-size:9px"],#setupBar [style*="font-size:8px"]{font-size:12px!important;}
+.si{font-size:15px;padding:11px 12px;border:1px solid var(--gr4);border-radius:12px;}
+.sg{gap:8px;margin-bottom:10px;}
+#setupBar button[onclick^="setZoom"]{background:var(--wh)!important;color:var(--gr)!important;border:1px solid var(--gr4)!important;border-radius:12px!important;padding:9px 12px!important;}
+#setupBar button[onclick^="setZoom"].tl-on{background:var(--gr)!important;color:var(--hnxl)!important;border-color:var(--gr)!important;}
+#setupBar .sbtn2:not([onclick^="setZoom"]){font-size:14px!important;padding:10px 16px!important;border-radius:12px!important;}
+.mhdr{padding:14px 18px 12px;}
+.mttl{font-size:20px;}
+.mcl{font-size:22px;width:40px;height:40px;border-radius:12px;}
+.mcl:hover{background:var(--gr5);}
+#sc-calendar :is([style*="font-size:7px"],[style*="font-size:8px"]){font-size:11px!important;}
+#sc-calendar [style*="font-size:9px"]{font-size:12px!important;}
+/* PIN screen: keep the title readable in dark mode */
+.pin-logo{color:#fff;font-size:24px;}
+.pin-screen>div[style*="font-size:11px"]{font-size:15px!important;}
+.pin-err{font-size:14px;}
+.pin-skip{font-size:13px;}
+.pin-key{border-radius:18px;}
