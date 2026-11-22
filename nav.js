@@ -86,12 +86,13 @@
     openSheet(`<h2>More</h2>`+DEST.map(g=>`<div class="tl-grp-s">${g.grp}</div>`+g.items.filter(it=>!TABS.some(t=>t[0]===it.id)).map(it=>`<button class="tl-act" data-tl="${it.id}"><i>${ic(it.icon,20)}</i><span>${esc(it.label)}</span></button>`).join('')).join(''));
   }
   const ACTIONS=[
+    {label:'Meet & greet',sub:'New enquiry or existing dog',icon:'dog',run:()=>{if(typeof openMG==='function')openMG();}},
     {label:'Register a new dog',sub:'Full profile',icon:'dog',run:()=>{if(typeof startReg==='function')startReg();}},
     {label:'New booking',sub:'Boarding, daycare, walks',icon:'book',run:()=>{if(typeof openBkModal==='function')openBkModal();}},
     {label:'Quote',sub:'Price a stay for WhatsApp',icon:'quote',run:()=>{if(typeof goToTab==='function')goToTab('customers','quote');}},
     {label:'Check dates',sub:'Space and overlaps',icon:'search',run:()=>byId('check').run()},
     {label:'Feeding board',sub:'Meals, walks and meds',icon:'bowl',run:()=>{if(typeof openFeedAll==='function')openFeedAll();}}];
-  function addSheet(){openSheet(`<h2>Add</h2>`+ACTIONS.map((a,i)=>`<button class="tl-act" data-tlact="${i}"><i>${ic(a.icon,20)}</i><span>${esc(a.label)}<small>${esc(a.sub)}</small></span></button>`).join(''));}
+  function addSheet(){openSheet(`<h2>Add</h2>`+ACTIONS.map((a,i)=>(i===0&&typeof openMG!=='function')?'':`<button class="tl-act" data-tlact="${i}"><i>${ic(a.icon,20)}</i><span>${esc(a.label)}<small>${esc(a.sub)}</small></span></button>`).join(''));}
 
   // ---------- settings: appearance + I am ----------
   function applyTheme(){const t=store.get('tcl_theme')||'auto';const dark=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
