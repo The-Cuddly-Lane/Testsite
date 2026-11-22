@@ -123,6 +123,33 @@
   ['showScreen','goToTab','switchSection','goSub','goBack','updatePendingBadge','toggleSetup'].forEach(wrap);
   const _ts=window.toggleSetup;window.toggleSetup=function(){const r=_ts.apply(this,arguments);settingsExtras();return r;};
 
+  // ---------- which spreadsheet is this device connected to? ----------
+  // Reads the sheet's own title from Google. A title containing "test" is treated as the test copy;
+  // anything else is shown as LIVE DATA in red, so nobody tests against Katie and Osbert's real sheet by accident.
+  let _sheetSeq=0;
+  function sheetBar(state,title){
+    let bar=document.getElementById('tlSheetBar');
+    if(!bar){bar=document.createElement('div');bar.id='tlSheetBar';bar.setAttribute('role','status');const h=document.querySelector('.hdr');if(h&&h.parentNode)h.parentNode.insertBefore(bar,h.nextSibling);else document.body.prepend(bar);}
+    bar.className='tl-sheet-bar tl-sheet-'+state;
+    const txt={test:'Test sheet',live:'LIVE DATA',none:'Not connected',unknown:'Sheet not checked'}[state];
+    const tail={live:' · changes here affect the real customer records',none:' · add the Spreadsheet ID in Settings',unknown:' · tap Sync to check'}[state]||'';
+    bar.innerHTML=`<strong>${txt}</strong>${title?' · '+esc(title):''}<span class="tl-sheet-tail">${tail}</span>`;
+    const side=document.getElementById('tlSide');if(side){const b=side.querySelector('.tl-brand small');if(b)b.dataset.sheet=state;}
+  }
+  async function checkSheet(){
+    const seq=++_sheetSeq;const sid=typeof getSID==='function'?getSID():'';
+    if(!sid){sheetBar('none','');return;}
+    try{
+      const t=await getToken();
+      const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+encodeURIComponent(sid)+'?fields=properties.title',{headers:{Authorization:'Bearer '+t}});
+      const d=await r.json();if(seq!==_sheetSeq)return;
+      const title=d&&d.properties&&d.properties.title;
+      if(!title){sheetBar('unknown','');return;}
+      sheetBar(/test/i.test(title)?'test':'live',title);
+    }catch(e){if(seq===_sheetSeq)sheetBar('unknown','');}
+  }
+  ['refreshBoard','saveConfig'].forEach(name=>{const f=window[name];if(typeof f!=='function')return;window[name]=function(){const r=f.apply(this,arguments);Promise.resolve(r).finally(()=>checkSheet());return r;};});
+
   function boot(){
     applyTheme();
     if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',applyTheme);
@@ -133,7 +160,7 @@
     }
     // v85 counts to-dos into #pendingBadge but has no such element on the page; add a hidden one so the tab badge can show the count.
     if(!document.getElementById('pendingBadge')){const h=document.createElement('div');h.hidden=true;h.innerHTML='<span id="pendingBadge" style="display:none"></span>';document.body.appendChild(h);}
-    settingsExtras();render();
+    settingsExtras();render();checkSheet();
     try{if(typeof updatePendingBadge==='function')updatePendingBadge();}catch(e){}
     const pb=document.getElementById('pendingBadge');if(pb&&window.MutationObserver)new MutationObserver(render).observe(pb,{childList:true,characterData:true,subtree:true,attributes:true});
   }
