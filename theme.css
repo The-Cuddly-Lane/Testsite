@@ -131,3 +131,12 @@ html[data-theme=dark] .tl-fab{color:#1A1716;}
 .hdr-logo{white-space:nowrap;font-size:14px;}
 @media(max-width:420px){#appVer{display:none;}.sync-info{display:none!important;}}
 .screen{padding-bottom:96px;}
+
+/* which spreadsheet this device is connected to (nav.js checkSheet) */
+.tl-sheet-bar{flex-shrink:0;padding:6px 14px;font-size:12px;line-height:1.35;border-bottom:1px solid var(--gr4);}
+.tl-sheet-bar strong{font-weight:800;}
+.tl-sheet-test{background:var(--gnl);color:var(--gn);}
+.tl-sheet-live{background:var(--rd);color:#fff;}
+html[data-theme=dark] .tl-sheet-live{color:#1A1716;}
+.tl-sheet-none,.tl-sheet-unknown{background:var(--gr5);color:var(--gr2);}
+@media(max-width:520px){.tl-sheet-tail{display:none;}}
