@@ -95,7 +95,7 @@
     const isBk=tab===TABS.BK;const cachedHdr=(isBk?bkHdrRow:dogsHdrRow)||[];const idName=isBk?'ID':'CustomerID';
     const newMap={};cachedHdr.forEach((h,i)=>{if(h&&keys.has(h))newMap[h]=vals[i];});
     const id=norm(newMap[idName]);
-    const fresh=await readSheet(tab,'A1:CZ');const fh=fresh[0]||[];
+    const fresh=await (readSheet.fresh||readSheet)(tab,'A1:CZ');const fh=fresh[0]||[];
     let row;
     if(id)row=locate(fresh,fh.indexOf(idName),id,ri,tab);
     else{ // record without an ID (old data): only trust the cached row if it still looks like the same record
@@ -137,7 +137,7 @@
     }
     if(tab!==TABS.BK)return _clearRow(tab,ri);
     const rec=(typeof bookings!=='undefined'?bookings:[]).find(b=>b.ri===ri);
-    const fresh=await readSheet(tab,'A1:CZ');const fh=fresh[0]||[];
+    const fresh=await (readSheet.fresh||readSheet)(tab,'A1:CZ');const fh=fresh[0]||[];
     let row=ri;if(rec&&rec.id)row=locate(fresh,fh.indexOf('ID'),norm(rec.id),ri,tab);
     const last=colA1(Math.max(fh.length,(fresh[row-1]||[]).length,26)-1);
     const t=await getToken();
