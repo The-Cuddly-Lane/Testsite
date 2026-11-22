@@ -309,3 +309,22 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 .cw-bar .cw-nm{font-size:12px;}
 .cw-bar .cw-per{font-size:10px;}
 .cw-visit{font-size:11px;border-radius:6px;padding:2px 6px;}
+
+/* ============================ To-do (option A) ============================ */
+/* the list is built by renderPendingPanel() with inline sizes; scale them up here, no logic touched */
+#sc-todo .pg-t{font-size:26px;}
+#todoOutstanding{font-size:15px!important;}
+#sc-todo>.pg>div:first-child{background:var(--hnxl)!important;}
+#todoCounter span[onclick]{font-size:13px!important;padding:6px 12px!important;}
+#pending_results>div[style*="border:1px solid var(--gr4)"]{border:0!important;border-radius:18px!important;box-shadow:var(--shadow);background:var(--wh);margin-bottom:14px!important;}
+#pending_results [style*="font-size:8px"]{font-size:11px!important;}
+#pending_results [style*="font-size:9px"]{font-size:12px!important;}
+#pending_results [style*="font-size:10px"]{font-size:14px!important;}
+#pending_results [style*="font-size:11px"]{font-size:15px!important;}
+#pending_results [style*="font-size:12px"]{font-size:17px!important;}
+#pending_results [style*="width:30px;height:30px"]{width:42px!important;height:42px!important;}
+#pending_results [style*="width:17px;height:17px"]{width:22px!important;height:22px!important;border-radius:7px!important;}
+#pending_results [style*="padding:6px 10px 6px 14px"]{padding:11px 14px 11px 16px!important;}
+#pending_results [style*="padding:8px 10px"]{padding:12px 14px!important;}
+#pending_results [style*="border-top:2px solid var(--rd)"]{border-top-width:1px!important;}
+#pending_results [style*="border-radius:99px"]{padding:5px 11px!important;}
