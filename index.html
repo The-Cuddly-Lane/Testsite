@@ -514,7 +514,7 @@ tbody tr:hover{background:var(--gr5)!important;cursor:pointer;}
   <input class="si" id="cfg_calid" placeholder="Calendar ID, e.g. yourname@gmail.com">
   <div class="brow" style="margin-top:6px;"><button class="sbtn" onclick="saveCalConfig()">Save calendar</button><button class="sbtn" style="background:var(--gr2);" onclick="testCal()">Test connection</button></div>
   <span id="calCfgStatus" style="font-size:10px;display:block;margin-top:6px;"></span>
-  <div id="verFooter" style="margin-top:10px;padding-top:8px;border-top:1px solid var(--gr4);font-size:9px;color:var(--gr3);text-align:right;">THE CUDDLY LANE · tcl-v90t1</div>
+  <div id="verFooter" style="margin-top:10px;padding-top:8px;border-top:1px solid var(--gr4);font-size:9px;color:var(--gr3);text-align:right;">THE CUDDLY LANE · tcl-v91t1</div>
 </div>
 <!-- NAV -->
 <div class="snav-bar">
@@ -527,6 +527,7 @@ tbody tr:hover{background:var(--gr5)!important;cursor:pointer;}
 <!-- BOARD -->
 <div class="screen active" id="sc-board">
   <div style="margin:10px 13px 0;background:var(--rdl);border:1px solid #FCA5A5;border-radius:var(--r);padding:9px 11px;font-size:10px;color:var(--rd);display:none;" id="credWarn">No credentials — tap Settings to connect Google Sheets.</div>
+  <div id="tlBoardTop" class="tlb"></div>
   <div class="brd-hdr" style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><div class="brd-t">Today's Board <span id="boardDate" style="font-weight:500;color:var(--gr2);"></span></div><button onclick="openFeedAll()" title="Show every on-site dog's food & medication on one page" style="flex-shrink:0;background:var(--or);color:#fff;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--fb);display:flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(0,0,0,.15);">🍽️ Feeding board</button></div>
   <div class="srch-row"><span class="srch-ico">&#128269;</span><input class="srch-inp" id="dogSearch" placeholder="Search dog name, breed or ID..." oninput="renderBoard()"></div>
   <div class="bsec">

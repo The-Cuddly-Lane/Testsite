@@ -68,6 +68,7 @@
   function pendingCount(){const b=document.getElementById('pendingBadge');if(!b||b.style.display==='none')return 0;const n=parseInt((b.textContent||'').replace(/\D/g,''),10);return isNaN(n)?0:n;}
 
   function render(){
+    try{if(typeof renderBoardTop==='function')renderBoardTop();}catch(e){}
     const cur=currentId();const n=pendingCount();
     const moreIds=ALL.map(x=>x.id).filter(id=>!TABS.some(t=>t[0]===id));
     const tabs=document.getElementById('tlTabs');
