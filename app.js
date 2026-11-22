@@ -216,8 +216,11 @@ async function doCreateSheet(){
     {n:TABS.RATES,h:['Key','Value','UpdatedAt']},
   ];
   try{await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+getSID()+':batchUpdate',{method:'POST',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify({requests:sheets.map(sh=>({addSheet:{properties:{title:sh.n}}}))})});}catch(e){}
-  for(const sh of sheets){try{await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+getSID()+'/values/'+encodeURIComponent(sh.n+'!A1')+'?valueInputOption=RAW',{method:'PUT',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify({values:[sh.h]})});}catch(e){}}
-  s.textContent='Sheet structure created!';setTimeout(()=>s.textContent='',5000);
+  // Only write a header row into tabs whose row 1 is empty: overwriting an existing header (whose columns may be in a
+  // different order or include extra columns) would mislabel every column of real data.
+  let _skipped=[];
+  for(const sh of sheets){try{const _h=await readSheet(sh.n,'A1:CZ1').catch(()=>[]);if(_h[0]&&_h[0].some(v=>String(v||'').trim())){_skipped.push(sh.n);continue;}await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+getSID()+'/values/'+encodeURIComponent(sh.n+'!A1')+'?valueInputOption=RAW',{method:'PUT',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify({values:[sh.h]})});}catch(e){}}
+  s.textContent=_skipped.length?'Missing tabs created. Left alone (already had headers): '+_skipped.join(', '):'Sheet structure created!';setTimeout(()=>s.textContent='',5000);
 }
 
 // ==================== NAV ====================
