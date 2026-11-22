@@ -59,6 +59,7 @@
     return null;
   }
 
+  const AUTO_ADD=['WF_Selfie'];
   const colA1=j=>{let s='';j++;while(j>0){const m=(j-1)%26;s=String.fromCharCode(65+m)+s;j=Math.floor((j-1)/26);}return s;};
   const norm=v=>(v==null?'':String(v)).replace(/^'/,'').trim();
 
@@ -83,7 +84,14 @@
   const _updateRow=updateRow;
   window.updateRow=async function(tab,ri,vals){
     const keys=ownedKeys(tab);
-    if(!keys||!keys.size)return _updateRow(tab,ri,(vals||[]).map(safeCell));
+    if(!keys||!keys.size){
+      // Log tabs: the row is remembered from the history list. Check it still belongs to the same dog before overwriting it.
+      if(LOG_TABS().includes(tab)&&ri&&norm(vals&&vals[0])){
+        const now=await readSheet(tab,'A'+ri+':A'+ri).catch(()=>[]);const got=norm((now[0]||[])[0]);
+        if(got!==norm(vals[0]))throw new Error('That log row has changed in the sheet since it was loaded. Tap Sync and try again. Nothing was saved.');
+      }
+      return _updateRow(tab,ri,(vals||[]).map(safeCell));
+    }
     const isBk=tab===TABS.BK;const cachedHdr=(isBk?bkHdrRow:dogsHdrRow)||[];const idName=isBk?'ID':'CustomerID';
     const newMap={};cachedHdr.forEach((h,i)=>{if(h&&keys.has(h))newMap[h]=vals[i];});
     const id=norm(newMap[idName]);
@@ -99,6 +107,10 @@
     const rec=list.find(o=>o&&(isBk?(o.id===id&&(!ri||o.ri===ri)):o.cid===id))||list.find(o=>o&&(isBk?o.id===id:o.cid===id));
     const raw=RAW.get(rawKey(isBk,id,ri))||RAW.get(rawKey(isBk,id))||null;const base={};if(raw)cachedHdr.forEach((h,i)=>{if(h&&!(h in base))base[h]=raw[i];});
     const cur=fresh[row-1]||[];const data=[];
+    // 7: columns the app saves to but the sheet does not have yet (only WF_Selfie for now) get a header added at the end
+    if(rec&&isBk&&typeof bkFieldMap==='function'){try{const fm=bkFieldMap(rec);AUTO_ADD.forEach(h=>{if(!(h in newMap)&&fm[h]!==undefined)newMap[h]=fm[h];});}catch(e){}}
+    AUTO_ADD.forEach(h=>{if(!(h in newMap)||fh.includes(h)||!norm(newMap[h]))return;const j=fh.length;fh.push(h);
+      data.push({range:qTab(tab)+'!'+colA1(j)+'1',values:[[h]]});if(isBk&&typeof bkHdrRow!=='undefined'&&!bkHdrRow.includes(h))bkHdrRow.push(h);});
     fh.forEach((h,j)=>{
       if(!h||!(h in newMap))return;
       const nv=newMap[h];
@@ -113,8 +125,16 @@
   };
 
   // ---------- 3: deleting a booking clears the whole row, after checking it is the right one ----------
+  const LOG_TABS=()=>[TABS.DAILY,TABS.HEALTH,TABS.FIGHT,TABS.TRANSPORT,TABS.TRIAL,TABS.ACTLOG];
+  const staffName=()=>{try{return localStorage.getItem('tcl_me')||'';}catch(e){return '';}};
   const _clearRow=clearRow;
   window.clearRow=async function(tab,ri){
+    if(tab===TABS.COSTS){ // check the remembered row is still the same cost before clearing it
+      const c=(typeof costs!=='undefined'?costs:[]).find(x=>x.ri===ri);
+      if(c){const now=await readSheet(tab,'A'+ri+':D'+ri).catch(()=>[]);const r=now[0]||[];
+        if(norm(r[0])!==norm(c.date)||Math.abs((parseFloat(String(r[2]).replace(/[^0-9.\-]/g,''))||0)-(+c.amount||0))>0.005)throw new Error('That cost row has changed in the sheet since it was loaded. Tap Sync and try again. Nothing was deleted.');}
+      return _clearRow(tab,ri);
+    }
     if(tab!==TABS.BK)return _clearRow(tab,ri);
     const rec=(typeof bookings!=='undefined'?bookings:[]).find(b=>b.ri===ri);
     const fresh=await readSheet(tab,'A1:CZ');const fh=fresh[0]||[];
@@ -139,6 +159,9 @@
   const _appendRow=appendRow;
   window.appendRow=async function(tab,vals){
     if(tab===TABS.RATES&&!_ratesOk){await ensureTab(TABS.RATES,['Key','Value','UpdatedAt']);_ratesOk=true;}
-    return _appendRow(tab,(vals||[]).map(safeCell));
+    let v=(vals||[]).map(safeCell);
+    // Activity-Log: fill Staff with the "I am" name when the app left it empty
+    if(tab===TABS.ACTLOG&&staffName()&&typeof actlogHdrRow!=='undefined'){const si=actlogHdrRow.indexOf('Staff');if(si>=0&&!norm(v[si])){v=v.slice();while(v.length<=si)v.push('');v[si]=staffName();}}
+    return _appendRow(tab,v);
   };
 })();
