@@ -1,0 +1,133 @@
+/* ============================================================================
+   The Cuddly Lane: "Soft & friendly" theme (option A) + light/dark mode.
+   Loaded AFTER the inline <style> in index.html. It only re-skins: every screen,
+   button and function from v85 is still there and still works the same way.
+   Colours: the old variable names are kept and re-pointed, so existing inline
+   styles (var(--or), var(--gr2)...) pick up the new palette automatically.
+   ============================================================================ */
+:root{
+  --fh:"Plus Jakarta Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --fb:"Plus Jakarta Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --r:12px;--r2:18px;
+  --deep:#292524;            /* dark surface for inverse elements (header used to be this) */
+  --shadow:0 1px 2px rgba(41,37,36,.06),0 4px 14px rgba(41,37,36,.05);
+  --tabh:64px;
+}
+/* ---------- light (default) ---------- */
+html:not([data-theme=dark]){
+  --or:#C2410C;--orl:#FED7AA;--orxl:#FFF1E6;
+  --hnl:#E7DDD3;--hnxl:#F7F5F2;
+  --gr:#292524;--gr2:#57534E;--gr3:#78716C;--gr4:#E7E5E4;--gr5:#FAF8F6;--wh:#FFFFFF;
+}
+/* ---------- dark ---------- */
+html[data-theme=dark]{
+  color-scheme:dark!important;background:#1A1716!important;
+  --or:#FB923C;--orl:#5A3518;--orxl:#3B2516;
+  --hn:#FBBF24;--hnl:#3A3431;--hnxl:#1A1716;
+  --cn:#FDBA74;--cnl:#3B2516;
+  --gr:#F5F5F4;--gr2:#C9C2BD;--gr3:#9C948E;--gr4:#3A3431;--gr5:#211D1B;--wh:#262220;
+  --rd:#F87171;--rdl:#3A1C1C;--gn:#4ADE80;--gnl:#14301F;--bl:#93C5FD;--bll:#11324A;
+  --sk:#7DD3FC;--skl:#0C3A55;--pu:#C4B5FD;--pul:#2E2550;
+  --deep:#3A3431;--shadow:0 1px 2px rgba(0,0,0,.3);
+}
+html[data-theme=dark] body{color-scheme:dark!important;}
+html[data-theme=dark] *{color-scheme:dark!important;}
+html[data-theme=dark] img{opacity:.95;}
+html:not([data-theme=dark]){background:#F7F5F2!important;}
+
+/* ---------- base ---------- */
+body{font-family:var(--fb);}
+.main{scroll-padding-bottom:calc(var(--tabh) + 24px);}
+button,input,select,textarea{font-family:var(--fb);}
+:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+
+/* inverse surfaces that used var(--gr) as a background */
+.pin-screen,.p-hero,.hfb.active,.toast,.hyrb.active,.q-res,.surprise-card,.grey{background:var(--deep)!important;}
+.sbtn{background:var(--deep);color:#fff;border-radius:12px;padding:9px 14px;font-size:12px;}
+.sbtn.rd{background:var(--rd);}
+
+/* ---------- header: light bar instead of the dark brown one ---------- */
+.hdr{background:var(--wh);border-bottom:1px solid var(--gr4);padding:10px 14px;gap:8px;}
+.hdr-logo{color:var(--gr);font-size:15px;letter-spacing:0;}
+.hdr-sub{color:var(--gr2);font-size:11px;}
+.hdr-back{color:var(--or);font-size:13px;font-weight:700;min-height:36px;}
+.hbtn{background:var(--wh);border:1px solid var(--gr4);color:var(--gr);padding:8px 12px;border-radius:12px;font-size:12px;font-weight:600;min-height:36px;}
+.hbtn:hover{background:var(--gr5);}
+.hbtn.or{background:var(--or);border-color:var(--or);color:#fff;}
+html[data-theme=dark] .hbtn.or{color:#1A1716;}
+.sync-info{color:var(--gr2)!important;}
+
+/* old three-button section bar is replaced by the tab bar / sidebar below */
+.snav-bar{display:none!important;}
+
+/* sub-tabs become a calm chip row */
+.subtab-bar{background:var(--hnxl);border-bottom:1px solid var(--gr4);padding:8px 12px;gap:6px;}
+.subtab{font-size:12px;padding:8px 14px;border-radius:999px;border:1px solid var(--gr4);background:var(--wh);color:var(--gr2);font-weight:600;}
+.subtab.active{background:var(--gr);color:var(--hnxl);border-color:var(--gr);border-width:1px;font-weight:700;}
+
+/* ---------- settings panel ---------- */
+.setup-bar{background:var(--wh);border-bottom:1px solid var(--gr4);padding:14px;}
+.si{border:1px solid var(--gr4);border-radius:12px;padding:9px 11px;font-size:13px;background:var(--hnxl)!important;}
+
+/* ---------- content ---------- */
+.pg-t,.brd-t{font-size:22px;letter-spacing:-.01em;}
+.pg-s{font-size:12px;}
+.srch-inp{border-radius:14px;padding:10px 12px 10px 30px;font-size:13px;}
+.bsec-l{font-size:11px;letter-spacing:.04em;}
+.dcards{gap:10px;}
+.dcard{border-radius:18px;border-color:transparent;box-shadow:var(--shadow);}
+.dcard.on{border-color:var(--gn);}
+.dc-photo{background:var(--orxl);}
+.add-btn{border-radius:14px!important;}
+.modal .mbox,.modal>div{border-radius:20px;}
+
+/* ---------- new navigation: bottom tabs (phone) ---------- */
+.tl-tabs{position:fixed;left:0;right:0;bottom:0;z-index:300;height:calc(var(--tabh) + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);
+  background:var(--wh);border-top:1px solid var(--gr4);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));}
+.tl-tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;background:none;color:var(--gr2);font-size:11px;font-weight:500;cursor:pointer;min-height:48px;}
+.tl-tab[aria-current=page]{color:var(--or);font-weight:700;}
+.tl-badge{position:absolute;top:6px;left:50%;margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--or);color:#fff;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;}
+html[data-theme=dark] .tl-badge{color:#1A1716;}
+body{padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px));}
+
+/* ---------- desktop: sidebar instead of bottom tabs ---------- */
+.tl-side{display:none;}
+@media(min-width:900px){
+  .tl-tabs{display:none;}
+  body{padding-bottom:0;padding-left:248px;}
+  .tl-side{display:flex;flex-direction:column;gap:2px;position:fixed;left:0;top:0;bottom:0;width:248px;z-index:300;overflow-y:auto;
+    background:var(--wh);border-right:1px solid var(--gr4);padding:18px 12px;}
+  .tl-brand{font-weight:800;font-size:17px;color:var(--gr);padding:0 10px 14px;}
+  .tl-brand small{display:block;font-weight:500;font-size:12px;color:var(--gr2);}
+  .tl-grp{font-size:11px;font-weight:700;color:var(--gr2);padding:12px 10px 4px;}
+  .tl-item{display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:0 10px;border:0;border-radius:12px;background:none;color:var(--gr);font-size:14px;font-weight:500;text-align:left;cursor:pointer;}
+  .tl-item:hover{background:var(--gr5);}
+  .tl-item[aria-current=page]{background:var(--orxl);color:var(--or);font-weight:700;}
+  .tl-item .tl-badge{position:static;margin-left:auto;display:none;}
+  .tl-fab{bottom:24px!important;}
+}
+
+/* ---------- "+" button and its action sheet ---------- */
+.tl-fab{position:fixed;right:16px;bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom,0px));z-index:301;width:56px;height:56px;border-radius:18px;border:0;
+  background:var(--or);color:#fff;box-shadow:0 8px 20px rgba(194,65,12,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+html[data-theme=dark] .tl-fab{color:#1A1716;}
+.tl-scrim{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;}
+.tl-sheet{background:var(--wh);color:var(--gr);width:min(560px,100%);max-height:88%;overflow:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom,0px));}
+@media(min-width:700px){.tl-scrim{align-items:center}.tl-sheet{border-radius:22px;}}
+.tl-sheet h2{font-size:20px;font-weight:800;margin:0 0 10px;}
+.tl-act{display:flex;gap:12px;align-items:center;width:100%;min-height:56px;padding:8px 6px;border:0;border-radius:12px;background:none;color:var(--gr);text-align:left;cursor:pointer;font-size:15px;font-weight:600;}
+.tl-act:hover{background:var(--gr5);}
+.tl-act i{width:40px;height:40px;border-radius:12px;background:var(--orxl);color:var(--or);display:flex;align-items:center;justify-content:center;font-style:normal;flex:none;}
+.tl-act small{display:block;font-size:12px;font-weight:500;color:var(--gr2);}
+.tl-grp-s{font-size:12px;font-weight:700;color:var(--gr2);margin:12px 6px 2px;}
+
+/* ---------- settings additions: appearance + I am ---------- */
+.tl-seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;padding:3px;border-radius:12px;background:var(--gr5);border:1px solid var(--gr4);margin-bottom:12px;min-width:260px;}
+.tl-seg button{min-height:36px;border:0;border-radius:9px;background:none;color:var(--gr2);font-size:13px;font-weight:600;cursor:pointer;padding:0 12px;}
+.tl-seg button[aria-pressed=true]{background:var(--wh);color:var(--gr);box-shadow:var(--shadow);}
+.tl-lbl{font-size:12px;font-weight:700;margin-bottom:6px;color:var(--gr);}
+@media(prefers-reduced-motion:no-preference){.tl-sheet{animation:tlUp .2s ease-out}@keyframes tlUp{from{transform:translateY(20px);opacity:0}}}
+/* keep the logo on one line on phones, and let every screen scroll clear of the "+" button */
+.hdr-logo{white-space:nowrap;font-size:14px;}
+@media(max-width:420px){#appVer{display:none;}.sync-info{display:none!important;}}
+.screen{padding-bottom:96px;}
