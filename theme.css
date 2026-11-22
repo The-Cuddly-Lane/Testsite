@@ -328,3 +328,54 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 #pending_results [style*="padding:8px 10px"]{padding:12px 14px!important;}
 #pending_results [style*="border-top:2px solid var(--rd)"]{border-top-width:1px!important;}
 #pending_results [style*="border-radius:99px"]{padding:5px 11px!important;}
+
+/* ============================ Other screens (option A) ============================ */
+/* Check dates, Quote, Templates, Rates, Activities, Analysis, Costs, P&L, Training, Register.
+   CSS only: scales the small inline sizes these screens set, and turns panels and tiles into cards. */
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) .pg-t{font-size:26px;}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) .pg-s{font-size:14px;color:var(--gr2);}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) :is([style*="font-size:7px"],[style*="font-size:8px"]){font-size:11px!important;}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) [style*="font-size:9px"]{font-size:12px!important;}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) [style*="font-size:10px"]{font-size:13px!important;}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) [style*="font-size:11px"]{font-size:14px!important;}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) .sbtn2{font-size:14px!important;padding:11px 16px!important;border-radius:14px!important;}
+:is(#sc-checkdates,#sc-quote,#sc-templates,#sc-rates,#sc-activities,#sc-analysis,#sc-costs,#sc-pl,#sc-training,#sc-register) svg text{font-size:11px;}
+/* panels and tiles become cards */
+.sp-panel,.kpi,.act-item{border:0!important;border-radius:18px;box-shadow:var(--shadow);padding:14px 16px;}
+.sp-ht{font-size:15px;}
+.kpi-g{gap:10px;}
+.kpi-l,.kpi-s{font-size:12px;color:var(--gr2);}
+.kpi-v{font-size:22px;}
+.leg{font-size:12px;color:var(--gr2);}
+.leg-d{width:10px;height:10px;}
+.act-item{margin-bottom:10px;}
+.act-title{font-size:16px;}
+.act-m,.act-last{font-size:12px;}
+.act-cat{font-size:11px;padding:3px 9px;}
+.act-log-btn{width:40px;height:40px;font-size:20px;}
+.tpl-cat-btn{font-size:13px!important;padding:7px 12px!important;border-radius:99px!important;}
+.hol-rng{font-size:12px;padding:4px 10px;}
+.q-ln{font-size:14px;padding:5px 0;}
+.q-ln:last-child{font-size:15px;}
+.q-res{border-radius:18px;padding:16px;}
+.q-out{font-size:13px;border-radius:14px;padding:14px;}
+.rsec{font-size:15px;border:0;border-left:4px solid var(--sc);border-radius:14px;box-shadow:var(--shadow);padding:11px 14px;}
+.nb-seg{height:8px;border-radius:4px;}
+.tpl-item{border:0!important;border-radius:16px;box-shadow:var(--shadow);padding:12px 14px;margin-bottom:8px;}
+.tpl-nm{font-size:15px;}
+.tpl-pv{font-size:12px;}
+.tpl-copy-btn{font-size:13px!important;padding:6px 12px!important;border-radius:10px!important;}
+.af-lbl{font-size:11px;width:72px;}
+.af-chip{font-size:13px;padding:7px 13px;}
+.dog-ms-item{font-size:14px!important;padding:10px 12px!important;}
+.dog-ms-item [style*="font-size"]{font-size:12px!important;}
+/* modals (booking, meet & greet, etc.) sit above the tab bar and the + button; confirm dialogs (400) stay above them */
+.modal{z-index:350;}
+/* feeding board: larger base size so chips are readable on phones (the board still scrolls if there are many dogs) */
+#feedingOverlay [style*="font-size:clamp(13px,3.3vmin,20px)"]{font-size:clamp(16px,4.2vmin,22px)!important;}
+.modal :is([style*="font-size:7px"],[style*="font-size:8px"]){font-size:11px!important;}
+.modal [style*="font-size:9px"]{font-size:12px!important;}
+.modal [style*="font-size:10px"]{font-size:13px!important;}
+.modal [style*="font-size:11px"]{font-size:14px!important;}
+#mgModal :is([style*="font-size:8px"],[style*="font-size:9px"]){font-size:12px!important;}
+#mgModal .sbtn2{font-size:15px!important;padding:12px 22px!important;border-radius:14px!important;}
