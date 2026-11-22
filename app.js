@@ -3214,7 +3214,7 @@ function registerSW(){if('serviceWorker' in navigator){navigator.serviceWorker.r
 
 // ==================== INIT ====================
 applyZoom();// (31) apply saved / desktop-default text size
-loadConfig();checkCreds();loadQSettings();initPin();
+loadConfig();checkCreds();loadQSettings();// initPin() runs once, at the end of this file
 msgTpls=JSON.parse(localStorage.getItem('tcl_msg_tpls')||'[]');
 loadActivities();
 document.getElementById('boardDate').textContent='· '+new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});// no year → fits one line on mobile
@@ -3401,4 +3401,6 @@ document.getElementById('st_date').value=todayStr();
 const bmDog=document.getElementById('bm_dog');if(bmDog)bmDog.addEventListener('change',updateDogIdHint);
 registerSW();
 renderSubTabs();
-initPin();
+// Start the first Sync once every script has loaded (sync-fast.js and nav.js wrap refreshBoard), and only once:
+// it used to be started twice on every page load, doubling the Google Sheets reads.
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initPin,{once:true});else initPin();

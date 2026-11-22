@@ -149,7 +149,7 @@
       sheetBar(/test/i.test(title)?'test':'live',title);
     }catch(e){if(seq===_sheetSeq)sheetBar('unknown','');}
   }
-  ['refreshBoard','saveConfig'].forEach(name=>{const f=window[name];if(typeof f!=='function')return;window[name]=function(){const r=f.apply(this,arguments);Promise.resolve(r).finally(()=>checkSheet());return r;};});
+  ['refreshBoard','saveConfig'].forEach(name=>{const f=window[name];if(typeof f!=='function')return;const seen=new WeakSet();window[name]=function(){const r=f.apply(this,arguments);if(r&&typeof r==='object'){if(seen.has(r))return r;seen.add(r);}Promise.resolve(r).finally(()=>checkSheet());return r;};});
 
   function boot(){
     applyTheme();

@@ -34,3 +34,10 @@ Automated run in headless Chrome at 390px (phone) and 1280px (desktop), against 
 - No JavaScript errors, no alerts, no sideways scrolling.
 
 Not checked: saving to a real Google Sheet (unchanged code), real phones, and every pop-up in dark mode. Some old inline colours may still look off in dark mode; report any you see.
+
+## Sync and Google's read limit (sync-fast.js)
+
+- Google allows about 60 read requests per minute per user. v85 started the Sync **twice** on every page load and read each tab separately (about 28 requests per load), so a few reloads in a minute showed "Quota exceeded".
+- Now the first Sync starts once, after all scripts load. Tapping Sync while one is running joins the running one. All tabs are read in one `batchGet` request after one small request for the tab list. A page load sends about 4 requests.
+- Tabs that don't exist yet, or a failed prefetch, fall back to the old one-request-per-tab reads. The re-read before a write (safe-write.js) always goes to the sheet, never the Sync cache.
+- A quota error now reads: "Google is limiting how often the app can read the sheet. Wait a minute, then tap Sync."
