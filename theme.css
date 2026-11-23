@@ -372,7 +372,7 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 /* modals (booking, meet & greet, etc.) sit above the tab bar and the + button; confirm dialogs (400) stay above them */
 .modal{z-index:350;}
 /* feeding board: larger base size so chips are readable on phones (the board still scrolls if there are many dogs) */
-#feedingOverlay [style*="font-size:clamp(13px,3.3vmin,20px)"]{font-size:clamp(16px,4.2vmin,22px)!important;}
+#feedPageHost [style*="font-size:clamp(13px,3.3vmin,20px)"]{font-size:clamp(16px,4.2vmin,22px)!important;}
 .modal :is([style*="font-size:7px"],[style*="font-size:8px"]){font-size:11px!important;}
 .modal [style*="font-size:9px"]{font-size:12px!important;}
 .modal [style*="font-size:10px"]{font-size:13px!important;}
@@ -408,3 +408,6 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 #sc-settings .setup-bar{display:block;max-height:none;overflow:visible;border:0;background:var(--wh);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin-top:12px;}
 @media(min-width:900px){#sc-settings .pg{max-width:760px;}}
 body.tl-page-settings #subTabs{display:none;}
+
+/* feeding board page: the single-dog view sets its own font size too */
+#feedPageHost>div{padding-left:0!important;padding-right:0!important;}
