@@ -50,7 +50,7 @@
       {id:'pl',label:'P&L',icon:'chart',sc:'sc-pl',run:go('business','pl')},
       {id:'train',label:'Training',icon:'grad',sc:'sc-training',run:go('business','train')}]},
     {grp:'App',items:[
-      {id:'settings',label:'Settings',icon:'gear',sc:null,run:()=>{closeSheet();openSettings();}},
+      {id:'settings',label:'Settings',icon:'gear',sc:'sc-settings',run:()=>{closeSheet();openSettings();}},
       {id:'sync',label:'Sync with Google Sheet',icon:'sync',sc:null,run:()=>{closeSheet();if(typeof refreshBoard==='function')refreshBoard();}}]}
   ];
   const ALL=DEST.flatMap(g=>g.items);
@@ -106,7 +106,17 @@
     box.innerHTML=`<div><div class="tl-lbl">Appearance</div><div class="tl-seg" role="group" aria-label="Appearance">${[['light','Light'],['dark','Dark'],['auto','Auto']].map(([k,l])=>`<button data-tltheme="${k}" aria-pressed="${t===k}">${l}</button>`).join('')}</div></div>
       <div><div class="tl-lbl">I am <span style="font-weight:400;color:var(--gr2)">(this device)</span></div><div class="tl-seg" role="group" aria-label="I am">${STAFF.map(n=>`<button data-tlme="${n}" aria-pressed="${me===n}">${n}</button>`).join('')}</div></div>`;
   }
-  function openSettings(){const bar=document.getElementById('setupBar');if(bar&&!bar.classList.contains('open')&&typeof toggleSetup==='function')toggleSetup();settingsExtras();const m=document.getElementById('mainScroll');if(bar)bar.scrollIntoView({block:'start'});}
+  // Settings has its own page (sc-settings). The original panel (#setupBar, with every input and button) is moved into it,
+  // so all IDs and handlers stay the same.
+  function settingsScreen(){
+    let sc=document.getElementById('sc-settings');if(sc)return sc;
+    const bar=document.getElementById('setupBar'),board=document.getElementById('sc-board');if(!bar||!board)return null;
+    sc=document.createElement('div');sc.className='screen';sc.id='sc-settings';
+    sc.innerHTML='<div class="pg"><div class="pg-t">Settings</div><div class="pg-s">This device, the Google Sheet connection and Google Calendar</div></div>';
+    board.parentNode.appendChild(sc);sc.querySelector('.pg').appendChild(bar);bar.classList.add('open');
+    return sc;
+  }
+  function openSettings(){const sc=settingsScreen();if(!sc)return;settingsExtras();if(!sc.classList.contains('active'))showScreen('sc-settings');}
 
   // ---------- events ----------
   document.addEventListener('click',e=>{
@@ -121,10 +131,11 @@
 
   // keep the tabs in step with the app: after any screen change, and when the to-do badge changes
   function wrap(name){const f=window[name];if(typeof f!=='function'||f._tlWrapped)return;const w=function(){const r=f.apply(this,arguments);try{render();}catch(e){}return r;};w._tlWrapped=true;window[name]=w;}
-  // Going to another page closes the Settings panel (it used to stay open on top of every page)
-  ['showScreen','goToTab','switchSection','goSub','goBack'].forEach(name=>{const f=window[name];if(typeof f!=='function')return;window[name]=function(){const bar=document.getElementById('setupBar');if(bar)bar.classList.remove('open');return f.apply(this,arguments);};});
-  ['showScreen','goToTab','switchSection','goSub','goBack','updatePendingBadge','toggleSetup'].forEach(wrap);
-  const _ts=window.toggleSetup;window.toggleSetup=function(){const r=_ts.apply(this,arguments);settingsExtras();return r;};
+  ['showScreen','goToTab','switchSection','goSub','goBack','updatePendingBadge'].forEach(wrap);
+  window.toggleSetup=function(){const sc=settingsScreen();if(sc&&sc.classList.contains('active')){goBack();return;}openSettings();};
+  // header subtitle for the Settings page
+  {const _ss=window.showScreen;window.showScreen=function(id){const r=_ss.apply(this,arguments);document.body.classList.toggle('tl-page-settings',id==='sc-settings');if(id==='sc-settings'){const h=document.getElementById('hdrSub');if(h)h.textContent='Settings';}return r;};}
+  settingsScreen();
 
   // ---------- which spreadsheet is this device connected to? ----------
   // Reads the sheet's own title from Google. A title containing "test" is treated as the test copy;
