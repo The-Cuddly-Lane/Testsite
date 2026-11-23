@@ -1,0 +1,101 @@
+/* polish.css — "component wall" look, keeping The Cuddly Lane orange as the accent.
+   Loaded after theme.css. CSS only: no markup or logic changes.
+   Look: Geist type, warm grey page with flat white cards (24px corners), black pill primary buttons,
+   grey-filled inputs and secondary buttons, outlined chips that fill black when selected,
+   a segmented control for the section chips, and a springy press on every button. */
+
+:root{
+  --fh:"Geist","Plus Jakarta Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --fb:"Geist","Plus Jakarta Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --soft:cubic-bezier(.22,1.2,.36,1);
+  --ease:cubic-bezier(.65,0,.35,1);
+  --rcard:24px;
+}
+html:not([data-theme=dark]){
+  --hnxl:#ECEBE7;            /* page */
+  --gr5:#F2F2F0;             /* fills: inputs, secondary buttons, tracks */
+  --gr4:#E4E4E1;             /* lines */
+  --gr:#111111;--gr2:#62605C;--gr3:#8A8782;--wh:#FFFFFF;
+  --ink:#111111;--on-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(17,17,17,.04);
+  --lift:0 1px 2px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+}
+html[data-theme=dark]{
+  background:#0E0E0F!important;
+  --hnxl:#0E0E0F;--gr5:#232325;--gr4:#2E2E31;
+  --gr:#F4F4F2;--gr2:#A3A3A0;--gr3:#7C7C79;--wh:#1A1A1C;
+  --ink:#F4F4F2;--on-ink:#111111;
+  --shadow:none;
+  --lift:0 1px 2px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.3);
+}
+body{font-family:var(--fb);letter-spacing:-.005em;-webkit-font-smoothing:antialiased;}
+.pg-t,.tlb h1,.tlb-hi,.pnm,.mttl,.brd-t{letter-spacing:-.025em;}
+
+/* ---------- press feel: every button springs ---------- */
+button,.sbtn2,.hbtn,.subtab,.tl-item,.tl-tab,.af-chip,.hfb,.tlc-chip,.tlb-stat,.cal-cell,[role=button]{
+  transition:transform .35s var(--spring),background-color .2s var(--ease),color .2s var(--ease),box-shadow .2s var(--ease),border-color .2s var(--ease);
+}
+button:active,.sbtn2:active,.hbtn:active,.subtab:active,.af-chip:active,.hfb:active,.tlb-stat:active,[role=button]:active{transform:scale(.95);}
+.tl-item:active,.tl-tab:active{transform:scale(.97);}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+:focus-visible{outline:2px solid var(--or);outline-offset:2px;}
+
+/* ---------- header ---------- */
+.hbtn{background:var(--gr5)!important;border:0!important;color:var(--gr)!important;border-radius:999px!important;padding:9px 16px!important;font-weight:600;min-height:38px;}
+.hbtn.or{background:var(--ink)!important;color:var(--on-ink)!important;}
+html[data-theme=dark] .hbtn.or{color:var(--on-ink)!important;}
+
+/* ---------- section chips → segmented control ---------- */
+.subtab-bar{background:var(--hnxl)!important;border-bottom:0!important;padding:10px 14px 6px!important;}
+#subTabs{gap:0!important;}
+#subTabs .subtab{background:transparent;border:0!important;color:var(--gr2);font-weight:500;padding:9px 16px;font-size:14px;}
+#subTabs{background:var(--gr5)!important;border-radius:999px;padding:4px!important;margin:10px 14px 4px;width:max-content;max-width:calc(100% - 28px);}
+#subTabs .subtab.active{background:var(--wh);color:var(--gr);font-weight:600;box-shadow:var(--lift);}
+html[data-theme=dark] #subTabs .subtab.active{background:#2E2E31;}
+
+/* ---------- cards ---------- */
+.tlc,.tlb-stat,.psec,.sp-panel,.kpi,.tw,.fbar,.act-item,.tpl-item,.rsec,.q-res,#sc-settings .setup-bar,
+#pending_results>div[style*="border-radius"]{border-radius:var(--rcard)!important;box-shadow:var(--shadow)!important;}
+.tlb-stat{padding:16px 18px;}
+.tlb-stat b{font-weight:700;letter-spacing:-.03em;font-size:30px;}
+.tlb-stat.tlb-hot{background:var(--orxl);}
+.msh,.tl-sheet{border-radius:28px 28px 0 0!important;}
+
+/* ---------- buttons ---------- */
+/* orange buttons become the black primary pill; orange stays for highlights (selected, badges, today, LIVE) */
+.sbtn2,.sbtn,.ebtn,.cpbtn,.add-btn{border-radius:999px!important;font-weight:600!important;border:0!important;}
+.sbtn2[style*="background:var(--or)"],.sbtn2.or,.sbtn.or,button[style*="background:var(--or);color:#fff"],.cok{background:var(--ink)!important;color:var(--on-ink)!important;}
+.sbtn2[style*="background:var(--gr5)"],.sbtn2[style*="background:var(--wh)"],.sbtn2.grey,.sbtn.grey,.ccan{background:var(--gr5)!important;color:var(--gr)!important;}
+.ib,.mcl{border-radius:999px!important;background:var(--gr5)!important;border:0!important;}
+.tl-fab{border-radius:50%!important;background:var(--ink)!important;color:var(--on-ink)!important;box-shadow:0 10px 30px rgba(0,0,0,.22)!important;}
+.tl-fab:active{transform:scale(.9);}
+html[data-theme=dark] .tl-fab{color:var(--on-ink)!important;}
+
+/* ---------- inputs ---------- */
+.fi,.fs,.fta,.si,.tlb-search input,input[type=search]{background:var(--gr5)!important;border:1.5px solid transparent!important;border-radius:14px!important;box-shadow:none!important;}
+.fi:focus,.fs:focus,.fta:focus,.si:focus,.tlb-search input:focus{border-color:var(--or)!important;background:var(--wh)!important;outline:none;}
+.tlb-search,.tlb-search input{border-radius:999px!important;}
+
+/* ---------- chips: outlined, selected = black ---------- */
+.af-chip,.hfb,.tpl-cat-btn,.cal-view-btn,.tl-seg button{border:1.5px solid var(--gr4)!important;border-radius:999px!important;background:transparent;color:var(--gr);}
+.af-chip.active,.af-chip.on,.hfb.active,.hfb.act,.tpl-cat-btn.active,.cal-view-btn.active,.tl-seg button[aria-pressed=true],.tl-seg button.on{background:var(--ink)!important;border-color:var(--ink)!important;color:var(--on-ink)!important;}
+
+/* ---------- navigation ---------- */
+.tl-tabs{background:color-mix(in srgb,var(--wh) 88%,transparent)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--gr4)!important;}
+.tl-tab[aria-current=page]{color:var(--gr)!important;font-weight:600;}
+.tl-tab[aria-current=page]::after{content:'';position:absolute;bottom:5px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--or);}
+@media(min-width:900px){
+  .tl-side{background:var(--hnxl)!important;border-right:0!important;}
+  .tl-item{border-radius:999px!important;}
+  .tl-item:hover{background:color-mix(in srgb,var(--wh) 60%,transparent)!important;}
+  .tl-item[aria-current=page]{background:var(--wh)!important;color:var(--gr)!important;font-weight:600!important;box-shadow:var(--lift);}
+  .tl-item[aria-current=page] svg{color:var(--or);}
+}
+
+/* ---------- tables ---------- */
+thead th{background:transparent!important;color:var(--gr2)!important;font-weight:500!important;border-bottom:1px solid var(--gr4)!important;}
+/* plain .sbtn2 / .add-btn were orange by default; buttons with their own inline colour (green, red, grey) keep it */
+.sbtn2,.add-btn{background:var(--ink);color:var(--on-ink);}
+.cal-nav,.cal-today{border-radius:999px!important;background:var(--gr5)!important;border:0!important;}
+.ptab,.bk-tab-btn{transition:color .2s var(--ease);}
