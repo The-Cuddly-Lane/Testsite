@@ -231,7 +231,7 @@ function openAvail(){const p=document.getElementById('availPanel');if(p&&(p.styl
 function openSP(id){const e=document.getElementById('sp-'+id);if(e){e.classList.add('open');setTimeout(()=>{try{e.scrollIntoView({behavior:'smooth',block:'start'});}catch(_){}} ,60);}}
 // Section → ordered sub-tabs. sc = primary screen; after = optional panel to open on that screen.
 const SECTIONS={
-  dogs:[{k:'dogs',lbl:'🐾 Profiles',sc:'sc-board'},{k:'cal',lbl:'📅 Calendar',sc:'sc-calendar'},{k:'bk',lbl:'📋 Bookings',sc:'sc-bookings'},{k:'act',lbl:'🎯 Activities',sc:'sc-activities'}],
+  dogs:[{k:'dogs',lbl:'🐾 Profiles',sc:'sc-board'},{k:'feed',lbl:'🍽️ Feeding',sc:'sc-feed'},{k:'cal',lbl:'📅 Calendar',sc:'sc-calendar'},{k:'bk',lbl:'📋 Bookings',sc:'sc-bookings'},{k:'act',lbl:'🎯 Activities',sc:'sc-activities'}],
   customers:[{k:'todo',lbl:'✅ To-Do',sc:'sc-todo'},{k:'tpl',lbl:'✉️ Templates',sc:'sc-templates'},{k:'quote',lbl:'🔢 Quote',sc:'sc-quote'},{k:'rates',lbl:'💷 Rates',sc:'sc-rates'}],
   business:[{k:'an',lbl:'🔍 Analysis',sc:'sc-analysis'},{k:'cost',lbl:'💸 Costs',sc:'sc-costs'},{k:'pl',lbl:'📈 P&L',sc:'sc-pl'},{k:'train',lbl:'📚 Training',sc:'sc-training'}]
 };
@@ -247,7 +247,7 @@ function showScreen(id,push=true){
   const isRoot=SECTION_ROOTS.has(id)||id==='sc-business';
   document.getElementById('backBtn').style.display=isRoot?'none':'flex';document.getElementById('hdrTitle').style.display=isRoot?'block':'none';
   const _hs=document.getElementById('hdrSub');if(_hs){const subs={'sc-bookings':'Booking Records','sc-costs':'Cost Records','sc-pl':'P&L Dashboard','sc-calendar':'Availability Calendar','sc-training':'Staff Training','sc-templates':'Message Templates','sc-activities':'Activities','sc-analysis':'Analysis','sc-profile':curDog?curDog.name:'Dog Profile','sc-register':document.getElementById('reg_eid')?.value?'Edit Profile':'Register New Dog'};_hs.textContent=subs[id]||'Staff Portal';}
-  if(id==='sc-bookings')renderBk();if(id==='sc-pl')updatePL();if(id==='sc-costs'){initCostFilters();renderCostTable();};if(id==='sc-calendar')renderCalendar();if(id==='sc-templates')syncTplsFromSheet();if(id==='sc-activities')renderActs();if(id==='sc-analysis')renderAnalysis();if(id==='sc-quote'){buildQDogMS();buildMainDogBtns();_linkStart('ml_sd','ml_ed');}if(id==='sc-todo')renderPendingPanel();if(id==='sc-checkdates')initAvail();if(id==='sc-rates'){loadQSettings();renderHolYrBtns();}
+  if(id==='sc-feed'&&_fvFrom!=='single')renderFeedAll();if(id==='sc-bookings')renderBk();if(id==='sc-pl')updatePL();if(id==='sc-costs'){initCostFilters();renderCostTable();};if(id==='sc-calendar')renderCalendar();if(id==='sc-templates')syncTplsFromSheet();if(id==='sc-activities')renderActs();if(id==='sc-analysis')renderAnalysis();if(id==='sc-quote'){buildQDogMS();buildMainDogBtns();_linkStart('ml_sd','ml_ed');}if(id==='sc-todo')renderPendingPanel();if(id==='sc-checkdates')initAvail();if(id==='sc-rates'){loadQSettings();renderHolYrBtns();}
 }
 function goBack(){_stk.pop();showScreen(_stk[_stk.length-1]||'sc-board',false);}
 
@@ -1136,27 +1136,29 @@ const _FV_BOARD=[['walkAm','AM Walk'],['breakfast','Breakfast'],['medAm','Med AM
 function _fvVal(v){const s=(v||'').toString().trim();return(!s||['no','none','n/a','na','-'].includes(s.toLowerCase()))?'':v;}
 // Daily-log-aligned state styling → [bg, border, textColour, suffix]. Same look + ✓/○/✗/— vocabulary as the LOGS tab tiles (.tile.done-*).
 function _fvState(s){const M={yes:['var(--gnl)','var(--gn)','var(--gn)','✓'],todo:['var(--orl)','var(--or)','var(--or)','○'],refused:['#fff0f0','var(--rd)','var(--rd)','✗'],na:['var(--gr5)','var(--gr3)','var(--gr3)','—'],'':['var(--wh)','var(--gr4)','var(--gr)','']};return M[s]||M[''];}
-function _fvShow(){const o=document.getElementById('feedingOverlay');if(!o)return null;o.style.display='block';o.scrollTop=0;document.body.style.overflow='hidden';return o;}
+// The feeding board is a page (sc-feed, Dogs → Feeding) like Calendar or Bookings, not a full-screen overlay.
+// The single-dog feeding view is shown on the same page; Back returns to the board or the previous page.
+function _fvHost(){return document.getElementById('feedPageHost');}
+function _fvShow(){const h=_fvHost();if(!h)return null;const sc=document.getElementById('sc-feed');if(!sc.classList.contains('active'))goToTab('dogs','feed');document.getElementById('mainScroll').scrollTop=0;return h;}
 // On-site dogs = those with a non-cancelled booking whose range covers today (who we actually feed).
 function _fvOnSiteDogs(){const today=todayStr();const seen=new Set();const out=[];
   bookings.filter(b=>!['Cancelled','Canceled'].includes(b.status)&&b.sd&&b.sd<=today&&(b.ed||b.sd)>=today).forEach(b=>{const d=allDogs.find(x=>bkMatchesDog(b,x));if(d&&!seen.has(d.cid)){seen.add(d.cid);out.push(d);}});
   out.sort((a,c)=>(a.name||'').localeCompare(c.name||''));return out;}
-function openFeedAll(){if(!_fvShow())return;renderFeedAll();}
+function openFeedAll(){_fvFrom=null;if(!_fvShow())return;renderFeedAll();}
 function openFeedingViewForCid(cid,from){const d=allDogs.find(x=>x.cid===cid);if(!d)return;curDog=d;_fvFrom=from||null;_openFvSingle();}
 function openFeedingView(){if(!curDog)return;_fvFrom=null;_openFvSingle();}// from the profile hero
-function _openFvSingle(){_fvEdit=null;if(!_fvShow())return;renderFeedingView();}
-function fvBack(){if(_fvFrom==='all')openFeedAll();else closeFeedingView();}
-function closeFeedingView(){const o=document.getElementById('feedingOverlay');if(o)o.style.display='none';document.body.style.overflow='';}
+function _openFvSingle(){_fvEdit=null;const f=_fvFrom;_fvFrom='single';const h=_fvShow();_fvFrom=f;if(!h)return;renderFeedingView();}
+function fvBack(){if(_fvFrom==='all'){_fvFrom=null;renderFeedAll();document.getElementById('mainScroll').scrollTop=0;}else closeFeedingView();}
+function closeFeedingView(){const sc=document.getElementById('sc-feed');if(sc&&sc.classList.contains('active'))goBack();}
 // Consolidated read-only feeding info for every on-site dog, each with a button into its own log.
 // One-pager, 2 dogs per row. Read-only feeding reference for every on-site dog; each cell has its own "Update log" button.
 function renderFeedAll(){
-  const host=document.getElementById('feedingOverlay');if(!host)return;
+  const host=_fvHost();if(!host)return;
   const esc=s=>(s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const dogs=_fvOnSiteDogs();const today=todayStr();
   // One uniform, device-dynamic font (smaller cap than the single view since the board is 2 columns).
-  let html='<div style="max-width:840px;margin:0 auto;min-height:100dvh;box-sizing:border-box;display:flex;flex-direction:column;padding:.5em .55em .6em;font-size:clamp(13px,3.3vmin,20px);">';
+  let html='<div style="max-width:840px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;padding:.5em .55em .6em;font-size:clamp(13px,3.3vmin,20px);">';
   html+='<div style="display:flex;align-items:center;gap:.4em;flex-shrink:0;margin-bottom:.4em;">'+
-    '<button onclick="closeFeedingView()" title="Back to board" style="flex-shrink:0;background:var(--gr5);border:1px solid var(--gr4);border-radius:10px;padding:.3em .6em;font-size:inherit;font-weight:800;cursor:pointer;font-family:var(--fb);">← Back</button>'+
     '<div style="flex:1;min-width:0;"><div style="font-weight:800;color:var(--bk);line-height:1.05;">🍽️ Feeding board</div><div style="font-size:.6em;color:var(--gr2);">'+dogs.length+' dog'+(dogs.length!==1?'s':'')+' on-site · '+fmtDate(today)+' · <b style="color:var(--gn);">✓</b> done <b style="color:var(--rd);">✗</b> refused <b style="color:var(--gr3);">—</b> N/A · tap a chip to change</div></div></div>';
   if(!dogs.length){html+='<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--gr3);">No dogs on-site today.</div></div>';host.innerHTML=html;return;}
   // (63) Bulk actions — we feed/walk every dog together, so one tap marks an item done for ALL on-site dogs.
@@ -1235,7 +1237,7 @@ async function fvBulkMark(key){
   try{const raw=await readSheet(TABS.DAILY,'A1:R').catch(()=>[]);for(const d of dogs){await saveDailyLogFor(d.cid,d.name,raw);}if(typeof toast==='function')toast('✓ Updated '+dogs.length+' dog'+(dogs.length!==1?'s':''),'ok');try{updatePendingBadge();renderBoard();}catch(e){}}catch(e){if(typeof toast==='function')toast('⚠️ Bulk save failed: '+(e.message||e),'err');}
 }
 function renderFeedingView(){
-  const host=document.getElementById('feedingOverlay');if(!host||!curDog)return;const d=curDog;
+  const host=_fvHost();if(!host||!curDog)return;const d=curDog;
   const foodMeas=_fvVal(d.foodMeasure),medSched=_fvVal(d.medSchedule),allerg=_fvVal(d.allerg),food=_fvVal(d.food),diet=_fvVal(d.dietNotes),med=_fvVal(d.med);
   const lk='log_'+d.cid+'_'+todayStr();const sv=JSON.parse(localStorage.getItem(lk)||'{}');const photo=resolvePhotoUrl(d);
   const esc=s=>(s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');

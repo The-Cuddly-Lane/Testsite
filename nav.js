@@ -37,7 +37,7 @@
       {id:'cal',label:'Calendar',icon:'cal',sc:'sc-calendar',run:go('dogs','cal')},
       {id:'bk',label:'Bookings',icon:'book',sc:'sc-bookings',run:go('dogs','bk')},
       {id:'act',label:'Activities',icon:'star',sc:'sc-activities',run:go('dogs','act')},
-      {id:'feed',label:'Feeding board',icon:'bowl',sc:null,run:()=>{closeSheet();if(typeof openFeedAll==='function')openFeedAll();}},
+      {id:'feed',label:'Feeding board',icon:'bowl',sc:'sc-feed',run:go('dogs','feed')},
       {id:'check',label:'Check dates',icon:'search',sc:'sc-checkdates',run:()=>{closeSheet();if(typeof goToTab==='function')goToTab('dogs','cal');if(typeof showScreen==='function')showScreen('sc-checkdates');}}]},
     {grp:'Customers',items:[
       {id:'todo',label:'To-do',icon:'check',sc:'sc-todo',run:go('customers','todo'),badge:true},
@@ -134,7 +134,7 @@
   ['showScreen','goToTab','switchSection','goSub','goBack','updatePendingBadge'].forEach(wrap);
   window.toggleSetup=function(){const sc=settingsScreen();if(sc&&sc.classList.contains('active')){goBack();return;}openSettings();};
   // header subtitle for the Settings page
-  {const _ss=window.showScreen;window.showScreen=function(id){const r=_ss.apply(this,arguments);document.body.classList.toggle('tl-page-settings',id==='sc-settings');if(id==='sc-settings'){const h=document.getElementById('hdrSub');if(h)h.textContent='Settings';}return r;};}
+  {const _ss=window.showScreen;window.showScreen=function(id){const r=_ss.apply(this,arguments);document.body.classList.toggle('tl-page-settings',id==='sc-settings');try{for(const sec in SECTIONS){const t=SECTIONS[sec].find(x=>x.sc===id);if(t){if(_curSection!==sec||_curSubK!==t.k){_curSection=sec;_curSubK=t.k;renderSubTabs();}break;}}}catch(e){}if(id==='sc-settings'){const h=document.getElementById('hdrSub');if(h)h.textContent='Settings';}return r;};}
   settingsScreen();
 
   // ---------- which spreadsheet is this device connected to? ----------

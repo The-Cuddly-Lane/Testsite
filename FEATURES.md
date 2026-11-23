@@ -41,3 +41,8 @@ Not checked: saving to a real Google Sheet (unchanged code), real phones, and ev
 - Now the first Sync starts once, after all scripts load. Tapping Sync while one is running joins the running one. All tabs are read in one `batchGet` request after one small request for the tab list. A page load sends about 4 requests.
 - Tabs that don't exist yet, or a failed prefetch, fall back to the old one-request-per-tab reads. The re-read before a write (safe-write.js) always goes to the sheet, never the Sync cache.
 - A quota error now reads: "Google is limiting how often the app can read the sheet. Wait a minute, then tap Sync."
+
+## Feeding board and Settings are pages (Nov 2026)
+
+- **Feeding board** is now a page under Dogs, named "🍽️ Feeding" and placed next to Profiles, Calendar, Bookings and Activities. It used to be a full-screen overlay. You can open it from the chip, the sidebar or More, the "+" sheet, or the Feeding board button on Today. "+Log" opens a dog's feeding view on the same page. Back returns to the board, or to the page you came from when the view was opened from a dog card or profile. Tile taps, Mark all done, edits and the add-log buttons are unchanged. `#feedingOverlay` stays in the HTML, unused.
+- **Settings** is its own page rather than a panel over the top of the current page. The original `#setupBar` is moved into it unchanged.
