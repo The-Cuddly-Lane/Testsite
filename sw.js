@@ -1,4 +1,4 @@
-const CACHE='tcl-v98t1';
+const CACHE='tcl-v99t1';
 const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon-192.png','./theme.css','./nav.js','./safe-write.js','./sync-fast.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});

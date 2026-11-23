@@ -403,3 +403,8 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 .pin-key{border-radius:18px;}
 .tl-sheet-sync{display:none;color:var(--gr2);}
 @media(max-width:420px){.tl-sheet-sync{display:inline;}}
+
+/* ============================ Settings page ============================ */
+#sc-settings .setup-bar{display:block;max-height:none;overflow:visible;border:0;background:var(--wh);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin-top:12px;}
+@media(min-width:900px){#sc-settings .pg{max-width:760px;}}
+body.tl-page-settings #subTabs{display:none;}
