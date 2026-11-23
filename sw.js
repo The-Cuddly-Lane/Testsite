@@ -1,4 +1,4 @@
-const CACHE='tcl-v100t1';
+const CACHE='tcl-v101t1';
 const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon-192.png','./theme.css','./nav.js','./safe-write.js','./sync-fast.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
@@ -10,5 +10,7 @@ self.addEventListener('fetch',e=>{
   // the background revalidate had refreshed the cache). Bypassing the SW for them keeps reads always live.
   if(new URL(e.request.url).origin!==self.location.origin)return;
   // Network first: with a connection you always get the latest version; the cached copy is only used offline.
-  e.respondWith(fetch(e.request).then(r=>{if(r&&r.status===200){const clone=r.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}return r;}).catch(()=>caches.match(e.request).then(c=>c||caches.match('./index.html'))));
+  // cache:'no-cache' makes the browser check with GitHub every time instead of reusing its own 10-minute copy,
+  // which had served an old app.js next to a new index.html right after an update.
+  e.respondWith(fetch(e.request,{cache:'no-cache'}).then(r=>{if(r&&r.status===200){const clone=r.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}return r;}).catch(()=>caches.match(e.request,{ignoreSearch:true}).then(c=>c||caches.match('./index.html'))));
 });
