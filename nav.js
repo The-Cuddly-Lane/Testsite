@@ -121,6 +121,8 @@
 
   // keep the tabs in step with the app: after any screen change, and when the to-do badge changes
   function wrap(name){const f=window[name];if(typeof f!=='function'||f._tlWrapped)return;const w=function(){const r=f.apply(this,arguments);try{render();}catch(e){}return r;};w._tlWrapped=true;window[name]=w;}
+  // Going to another page closes the Settings panel (it used to stay open on top of every page)
+  ['showScreen','goToTab','switchSection','goSub','goBack'].forEach(name=>{const f=window[name];if(typeof f!=='function')return;window[name]=function(){const bar=document.getElementById('setupBar');if(bar)bar.classList.remove('open');return f.apply(this,arguments);};});
   ['showScreen','goToTab','switchSection','goSub','goBack','updatePendingBadge','toggleSetup'].forEach(wrap);
   const _ts=window.toggleSetup;window.toggleSetup=function(){const r=_ts.apply(this,arguments);settingsExtras();return r;};
 
@@ -134,9 +136,12 @@
     bar.className='tl-sheet-bar tl-sheet-'+state;
     const txt={test:'Test sheet',live:'LIVE DATA',none:'Not connected',unknown:'Sheet not checked'}[state];
     const tail={live:' · changes here affect the real customer records',none:' · add the Spreadsheet ID in Settings',unknown:' · tap Sync to check'}[state]||'';
-    bar.innerHTML=`<strong>${txt}</strong>${title?' · '+esc(title):''}<span class="tl-sheet-tail">${tail}</span>`;
+    bar.innerHTML=`<strong>${txt}</strong>${title?' · '+esc(title):''}<span class="tl-sheet-tail">${tail}</span><span class="tl-sheet-sync"></span>`;mirrorSync();
     const side=document.getElementById('tlSide');if(side){const b=side.querySelector('.tl-brand small');if(b)b.dataset.sheet=state;}
   }
+  // "Synced 2m ago" sits in the header, which is hidden on narrow phones; show the same text in the sheet bar there
+  function mirrorSync(){const src=document.getElementById('syncInfo'),dst=document.querySelector('.tl-sheet-sync');if(src&&dst)dst.textContent=src.textContent?' · '+src.textContent:'';}
+  (function(){const src=document.getElementById('syncInfo');if(src&&window.MutationObserver)new MutationObserver(mirrorSync).observe(src,{childList:true,characterData:true,subtree:true});})();
   async function checkSheet(){
     const seq=++_sheetSeq;const sid=typeof getSID==='function'?getSID():'';
     if(!sid){sheetBar('none','');return;}

@@ -401,3 +401,5 @@ tbody tr[onclick]:hover td{background:var(--gr5);}
 .pin-err{font-size:14px;}
 .pin-skip{font-size:13px;}
 .pin-key{border-radius:18px;}
+.tl-sheet-sync{display:none;color:var(--gr2);}
+@media(max-width:420px){.tl-sheet-sync{display:inline;}}
