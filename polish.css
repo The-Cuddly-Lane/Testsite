@@ -180,3 +180,28 @@ body:has(#tlScrim) .tl-fab svg,body:has(#tlScrim) .tl-fab span{transform:rotate(
 /* section chips scroll sideways on narrow screens, but never show a scrollbar */
 #subTabs{scrollbar-width:none;-ms-overflow-style:none;}
 #subTabs::-webkit-scrollbar{display:none;}
+
+/* ============================ Other calendars (gcal-view.js) ============================ */
+.cal-dog.tl-ext{font-weight:600;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11px;}
+.tl-ext-list{margin-top:14px;background:var(--wh);border-radius:var(--rcard);padding:14px 16px;}
+.tl-ext-h{font-size:13px;font-weight:600;color:var(--gr2);margin-bottom:6px;}
+.tl-ext-row{display:grid;grid-template-columns:10px 64px 1fr auto;align-items:center;gap:10px;width:100%;padding:9px 0;border:0;border-top:1px solid var(--gr4);background:none;text-align:left;font-size:14px;color:var(--gr);}
+.tl-ext-row:first-of-type{border-top:0;}
+.tl-ext-row i,.tl-ext-item i,.tl-ext-cal i{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.tl-ext-row small{color:var(--gr2);font-size:12px;}
+.tl-ext-cal{font-size:13px;color:var(--gr2);display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.tl-ext-when{font-size:15px;font-weight:600;margin:0 0 8px;}
+.tl-ext-desc{white-space:pre-wrap;color:var(--gr2);font-size:14px;}
+.tl-ext-settings{margin-top:14px;padding-top:12px;border-top:1px solid var(--gr4);}
+.tl-ext-sh{font-size:14px;font-weight:700;margin-bottom:8px;}
+.tl-ext-sh span{font-weight:400;color:var(--gr2);font-size:13px;}
+.tl-ext-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--gr5);border-radius:14px;margin-bottom:8px;}
+.tl-ext-item div{flex:1;min-width:0;}
+.tl-ext-item b{display:block;font-size:14px;}
+.tl-ext-item small{display:block;font-size:12px;color:var(--gr2);overflow:hidden;text-overflow:ellipsis;}
+.tl-ext-none{font-size:13px;color:var(--gr3);margin-bottom:8px;}
+.tl-ext-add{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+.tl-ext-add[hidden],#tlExtAddBtn[hidden]{display:none;}
+#tlExtMsg{font-size:13px;}
+/* auto-sync redraws quietly: no entrance animations */
+body.tl-quiet .tlc,body.tl-quiet .tlc-bar i,body.tl-quiet .screen.active{animation:none!important;}

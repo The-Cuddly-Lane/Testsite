@@ -1,5 +1,5 @@
-const CACHE='tcl-v105t1';
-const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon-192.png','./theme.css','./polish.css','./nav.js','./motion.js','./safe-write.js','./sync-fast.js','./gcal-bookings.js'];
+const CACHE='tcl-v106t1';
+const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon-192.png','./theme.css','./polish.css','./nav.js','./motion.js','./autosync.js','./safe-write.js','./sync-fast.js','./gcal-bookings.js','./gcal-view.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
 self.addEventListener('fetch',e=>{
