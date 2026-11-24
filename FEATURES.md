@@ -57,3 +57,11 @@ Movement taken from the component wall; none of it changes data or what a button
 - The Today numbers count to their new value, and the To-do badge bumps when it changes.
 - Pages fade in, modals and the + sheet slide up with a spring, Today cards come in one after another, and progress bars fill. Toasts are white cards with a time bar. The + turns into × while its sheet is open.
 - If the device has "reduce motion" turned on, all of this is off.
+
+## Bookings in Google Calendar (gcal-bookings.js)
+
+- Bookings use the same calendar as meet & greets (Settings → Google Calendar), with different content. A booking event is titled like "🌙 Rex · Boarding (Sam)" and coloured by service. Its description holds the dates, owner, phone, drop-off and pick-up places, status and booking ID. A meet & greet event stays "🤝 Meet & Greet — …".
+- Saving a booking adds or updates its event. Quoted and Cancelled bookings have no event, and one is removed if it existed. Deleting a booking removes its event. A booking with times becomes a timed event; a booking without times becomes an all-day event that runs through its end date.
+- Settings → **Add all upcoming bookings** fills the calendar once. It is safe to run again, because it updates events rather than duplicating them.
+- Each event ID is stored in a new Bookings column, `GCal_EventID`, which is added automatically. The booking form never writes that column. Each event also carries its booking ID privately, so if the ID is lost the existing event is found and updated rather than duplicated.
+- Sync is one way only. Changes made in Google Calendar are not copied back into the app yet.
