@@ -177,3 +177,6 @@ body:has(#tlScrim) .tl-fab svg,body:has(#tlScrim) .tl-fab span{transform:rotate(
 @media (prefers-reduced-motion:reduce){
   .tl-ind,.screen.active,.modal.open,.modal.open>*,.tl-scrim,.tl-scrim .tl-sheet,.tlc,.tlc-bar i,.toast,.tl-pop{animation:none!important;transition:none!important;}
 }
+/* section chips scroll sideways on narrow screens, but never show a scrollbar */
+#subTabs{scrollbar-width:none;-ms-overflow-style:none;}
+#subTabs::-webkit-scrollbar{display:none;}
