@@ -39,6 +39,7 @@
       if(!ind){ind=document.createElement('i');ind.className='tl-ind tl-ind-'+cfg.kind;ind.setAttribute('aria-hidden','true');c.insertBefore(ind,c.firstChild);
         ind.style.transition='none';place(ind,prev||r);void ind.offsetWidth;ind.style.transition='';}
       c.classList.add('tl-has-ind');ind.style.opacity='1';
+      if(c.scrollWidth>c.clientWidth+2){const L=a.offsetLeft,R=L+a.offsetWidth;if(L<c.scrollLeft||R>c.scrollLeft+c.clientWidth)c.scrollTo({left:Math.max(0,L-24),behavior:animate&&!reduce?'smooth':'auto'});}
       if(!animate||reduce){ind.style.transition='none';place(ind,r);void ind.offsetWidth;ind.style.transition='';}
       else place(ind,r);
       last.set(key,r);
