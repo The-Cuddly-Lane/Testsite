@@ -99,3 +99,81 @@ thead th{background:transparent!important;color:var(--gr2)!important;font-weight
 .sbtn2,.add-btn{background:var(--ink);color:var(--on-ink);}
 .cal-nav,.cal-today{border-radius:999px!important;background:var(--gr5)!important;border:0!important;}
 .ptab,.bk-tab-btn{transition:color .2s var(--ease);}
+
+/* ============================ Motion (with motion.js) ============================ */
+/* sliding indicators */
+.tl-ind{position:absolute;left:0;top:0;pointer-events:none;z-index:0;border-radius:999px;
+  transition:transform .5s var(--spring),width .5s var(--spring),height .3s var(--ease),opacity .2s;}
+.tl-ind-pill{background:var(--wh);box-shadow:var(--lift);}
+html[data-theme=dark] .tl-ind-pill{background:#2E2E31;}
+.tl-ind-ink{background:var(--ink);}
+.tl-ind-line{background:var(--or);border-radius:3px;}
+.tl-has-ind>*:not(.tl-ind){position:relative;z-index:1;}
+.tl-has-ind .subtab.active{background:transparent!important;box-shadow:none!important;}
+.tl-has-ind button[aria-pressed=true],.tl-has-ind .cal-view-btn.active{background:transparent!important;border-color:transparent!important;color:var(--on-ink)!important;}
+.tl-has-ind .ptab.active,.tl-has-ind .bk-tab-active{border-bottom-color:transparent!important;}
+.tl-seg button,.cal-view-btn{transition:color .25s var(--ease),transform .35s var(--spring);}
+
+/* pop on the control you tapped */
+@keyframes tlPop{0%{transform:scale(1)}30%{transform:scale(.88)}65%{transform:scale(1.07)}100%{transform:scale(1)}}
+.tl-pop{animation:tlPop .45s var(--spring);}
+
+/* save buttons: spinner → ✓ / shake */
+@keyframes tlSpin{to{transform:rotate(360deg)}}
+@keyframes tlCheck{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:scale(1)}}
+@keyframes tlShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.tl-busy,.tl-done,.tl-copied{position:relative;color:transparent!important;pointer-events:none;}
+.tl-busy *,.tl-done *,.tl-copied *{visibility:hidden;}
+.tl-busy::after{content:'';position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
+  border:2.5px solid currentColor;border-color:var(--on-ink) var(--on-ink) var(--on-ink) transparent;opacity:.9;animation:tlSpin .7s linear infinite;}
+.tl-busy[style*="background:var(--gr5)"]::after,.tl-busy.grey::after{border-color:var(--gr) var(--gr) var(--gr) transparent;}
+.tl-done{background:var(--gn)!important;border-color:var(--gn)!important;}
+.tl-done::after,.tl-copied::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.15em;animation:tlCheck .4s var(--spring) both;}
+.tl-copied{background:var(--or)!important;border-color:var(--or)!important;}
+.tl-copied::after{content:'✓ Copied';font-size:.95em;}
+.tl-fail{animation:tlShake .5s var(--ease);background:var(--rd)!important;color:#fff!important;}
+
+/* pages, sheets and modals */
+@keyframes tlIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes tlUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes tlFade{from{opacity:0}to{opacity:1}}
+.screen.active{animation:tlIn .38s var(--soft) both;}
+.modal.open{animation:tlFade .2s var(--ease) both;}
+.modal.open>*{animation:tlUp .48s var(--spring) both;}
+.tl-scrim{animation:tlFade .2s var(--ease) both;}
+.tl-scrim .tl-sheet{animation:tlUp .48s var(--spring) both;}
+.tl-sheet .tl-act{animation:tlIn .4s var(--soft) both;}
+.tl-sheet .tl-act:nth-child(2){animation-delay:.03s}.tl-sheet .tl-act:nth-child(3){animation-delay:.06s}
+.tl-sheet .tl-act:nth-child(4){animation-delay:.09s}.tl-sheet .tl-act:nth-child(5){animation-delay:.12s}.tl-sheet .tl-act:nth-child(6){animation-delay:.15s}
+/* cards on Today come in one after another */
+#sc-board.active .tlc{animation:tlIn .45s var(--soft) both;}
+#sc-board.active .tlc:nth-child(2){animation-delay:.04s}#sc-board.active .tlc:nth-child(3){animation-delay:.08s}
+#sc-board.active .tlc:nth-child(4){animation-delay:.12s}#sc-board.active .tlc:nth-child(n+5){animation-delay:.16s}
+/* progress bars fill in */
+@keyframes tlGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.tlc-bar i{transform-origin:left;animation:tlGrow .9s var(--soft) .15s both;}
+
+/* toast: white card, slides up with a spring, coloured dot, time bar */
+.toast{background:var(--wh)!important;color:var(--gr)!important;font-size:14px!important;font-weight:600;padding:12px 16px 14px 44px!important;border-radius:16px!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.16)!important;position:relative;overflow:hidden;opacity:0;transform:translateY(24px) scale(.96)!important;
+  transition:opacity .25s var(--ease),transform .5s var(--spring)!important;}
+.toast.show{opacity:1;transform:none!important;}
+.toast::before{content:'i';position:absolute;left:12px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:grid;place-items:center;font-size:12px;font-weight:800;}
+.toast.ok::before{content:'✓';background:var(--gn);color:#fff;}
+.toast.err::before{content:'!';background:var(--rd);color:#fff;}
+.toast::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--or);transform-origin:left;}
+.toast.show::after{animation:tlDrain 2.6s linear both;}
+.toast.err.show::after{background:var(--rd);animation-duration:4.2s;}
+.toast.ok.show::after{background:var(--gn);}
+@keyframes tlDrain{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+/* + button turns into × while its sheet is open */
+.tl-fab svg,.tl-fab span{transition:transform .45s var(--spring);}
+body:has(#tlScrim) .tl-fab svg,body:has(#tlScrim) .tl-fab span{transform:rotate(45deg);}
+
+/* toggles inside the profile consent rows and the feeding tiles feel like the wall's switches */
+.tlc-chip,#feedPageHost button{transition:transform .35s var(--spring),background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);}
+
+@media (prefers-reduced-motion:reduce){
+  .tl-ind,.screen.active,.modal.open,.modal.open>*,.tl-scrim,.tl-scrim .tl-sheet,.tlc,.tlc-bar i,.toast,.tl-pop{animation:none!important;transition:none!important;}
+}

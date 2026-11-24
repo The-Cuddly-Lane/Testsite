@@ -46,3 +46,14 @@ Not checked: saving to a real Google Sheet (unchanged code), real phones, and ev
 
 - **Feeding board** is now a page under Dogs, named "🍽️ Feeding" and placed next to Profiles, Calendar, Bookings and Activities. It used to be a full-screen overlay. You can open it from the chip, the sidebar or More, the "+" sheet, or the Feeding board button on Today. "+Log" opens a dog's feeding view on the same page. Back returns to the board, or to the page you came from when the view was opened from a dog card or profile. Tile taps, Mark all done, edits and the add-log buttons are unchanged. `#feedingOverlay` stays in the HTML, unused.
 - **Settings** is its own page rather than a panel over the top of the current page. The original `#setupBar` is moved into it unchanged.
+
+## Motion (motion.js + polish.css)
+
+Movement taken from the component wall; none of it changes data or what a button does.
+- Sliding indicators: section chips, Settings (Appearance, I am), profile tabs, booking tabs, calendar view.
+- Pop: the chip, feeding tile, To-do tick, stat tile or PIN key you tap springs. It still pops when the list re-renders.
+- Save buttons: a spinner while saving, then ✓ (green) when done. A shake (red) appears if it failed, including when the save ends with an error message such as "Nothing was saved".
+- Copy buttons flip to "✓ Copied".
+- The Today numbers count to their new value, and the To-do badge bumps when it changes.
+- Pages fade in, modals and the + sheet slide up with a spring, Today cards come in one after another, and progress bars fill. Toasts are white cards with a time bar. The + turns into × while its sheet is open.
+- If the device has "reduce motion" turned on, all of this is off.
