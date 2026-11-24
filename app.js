@@ -743,7 +743,7 @@ function copyAvailReply(){
 }
 async function refreshBoard(){
   const btn=document.getElementById('refreshBtn');btn.style.opacity='.5';btn.style.pointerEvents='none';
-  document.getElementById('todayCards').innerHTML='<div class="empty"><p>Loading...</p></div>';
+  if(!window.__tlQuiet)document.getElementById('todayCards').innerHTML='<div class="empty"><p>Loading...</p></div>';// auto-sync keeps the cards on screen
   try{
     const dogRows=await readSheet(TABS.DOGS,'A1:CZ');const dh=mkHdr(dogRows[0]||[]);dogsHdrRow=dogRows[0]||[];allDogs=dogRows.slice(1).map((r,i)=>mapDog(r,i,dh)).filter(d=>d.name.trim());// wide range so appended cols (Sociability/Insurance/split-Emergency at BM–BQ, +future) are read — mapping is by header name
     const bkRows=await readSheet(TABS.BK,'A1:BZ').catch(()=>[]);const bh=mkHdr(bkRows[0]||[]);bkHdrRow=bkRows[0]||[];bookings=bkRows.slice(1).map((r,i)=>mapBk(r,i,bh));

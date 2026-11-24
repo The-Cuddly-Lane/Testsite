@@ -65,3 +65,18 @@ Movement taken from the component wall; none of it changes data or what a button
 - Settings → **Add all upcoming bookings** fills the calendar once. It is safe to run again, because it updates events rather than duplicating them.
 - Each event ID is stored in a new Bookings column, `GCal_EventID`, which is added automatically. The booking form never writes that column. Each event also carries its booking ID privately, so if the ID is lost the existing event is found and updated rather than duplicated.
 - Sync is one way only. Changes made in Google Calendar are not copied back into the app yet.
+
+## Auto-sync (autosync.js)
+
+- While the app is on screen it syncs every 60 seconds. It also syncs straight away when you come back to it after 30 seconds or more away. It pauses when hidden or offline.
+- It skips a minute when someone is busy: a form or sheet is open, the cursor is in a box, the PIN screen is up, or the page may hold unsaved work (Profile, Quote, Rates, Costs, Templates, Training, Register, Settings, a dog's feeding edit).
+- It redraws quietly: Today is not blanked to "Loading…" and cards don't replay their entrance. The Sync button still works the same.
+- Each sync is about 3 read requests, so two phones use about 6 of Google's roughly 60 per minute.
+
+## Other calendars (gcal-view.js)
+
+- Settings → Google Calendar → **Other calendars to show** → **＋ Add calendar** (name + Calendar ID). You can add as many as you like and remove one with ×. The calendar is checked before it is added. The list is shared by every device through Rates (`tcl_viewcals`).
+- Each calendar must be shared with the service account; "See all event details" is enough.
+- Events show as coloured lines in the Month view, with up to 3 per day and "+n more" beyond that. The Hour (day) view lists them as well. Tapping one opens its details and a link to Google Calendar. All of this is view only.
+- Events the app itself put in Google Calendar (bookings, meet & greets) are left out, so nothing shows twice.
+- Each calendar costs one read request per month shown, refreshed every minute with auto-sync.
