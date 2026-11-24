@@ -458,8 +458,8 @@ tbody tr:hover{background:var(--gr5)!important;cursor:pointer;}
 .sort-lbl{font-size:9px;color:var(--gr3);flex-shrink:0;}
 @media(max-width:360px){.fr{grid-template-columns:1fr;}.dcards{grid-template-columns:1fr 1fr;}.biz-grid{grid-template-columns:1fr;}}
 </style>
-<link rel="stylesheet" href="theme.css?v=tcl-v104t1">
-<link rel="stylesheet" href="polish.css?v=tcl-v104t1">
+<link rel="stylesheet" href="theme.css?v=tcl-v105t1">
+<link rel="stylesheet" href="polish.css?v=tcl-v105t1">
 </head>
 <body>
 <!-- PIN -->
@@ -510,12 +510,12 @@ tbody tr:hover{background:var(--gr5)!important;cursor:pointer;}
     <button class="sbtn rd" onclick="confirmCreateSheet()">Create Sheet Structure</button>
   </div>
   <span id="cfgStatus" style="font-size:10px;color:var(--gn);display:block;margin-top:6px;"></span>
-  <div style="font-size:11px;font-weight:700;margin:12px 0 4px;">Google Calendar <span style="font-weight:400;color:var(--gr2);">(optional — for meet &amp; greets)</span></div>
+  <div style="font-size:11px;font-weight:700;margin:12px 0 4px;">Google Calendar <span style="font-weight:400;color:var(--gr2);">(optional — bookings and meet &amp; greets)</span></div>
   <div style="font-size:10px;color:var(--gr2);margin-bottom:6px;">Share the calendar with the service account email above ("Make changes to events") and enable the Google Calendar API, then paste the Calendar ID. Leave blank to turn sync off.</div>
   <input class="si" id="cfg_calid" placeholder="Calendar ID, e.g. yourname@gmail.com">
   <div class="brow" style="margin-top:6px;"><button class="sbtn" onclick="saveCalConfig()">Save calendar</button><button class="sbtn" style="background:var(--gr2);" onclick="testCal()">Test connection</button></div>
   <span id="calCfgStatus" style="font-size:10px;display:block;margin-top:6px;"></span>
-  <div id="verFooter" style="margin-top:10px;padding-top:8px;border-top:1px solid var(--gr4);font-size:9px;color:var(--gr3);text-align:right;">THE CUDDLY LANE · tcl-v104t1</div>
+  <div id="verFooter" style="margin-top:10px;padding-top:8px;border-top:1px solid var(--gr4);font-size:9px;color:var(--gr3);text-align:right;">THE CUDDLY LANE · tcl-v105t1</div>
 </div>
 <!-- NAV -->
 <div class="snav-bar">
@@ -1521,10 +1521,11 @@ tbody tr:hover{background:var(--gr5)!important;cursor:pointer;}
   </div>
 </div>
 
-<script src="app.js?v=tcl-v104t1"></script>
-<script src="safe-write.js?v=tcl-v104t1"></script>
-<script src="sync-fast.js?v=tcl-v104t1"></script>
-<script src="nav.js?v=tcl-v104t1"></script>
-<script src="motion.js?v=tcl-v104t1"></script>
+<script src="app.js?v=tcl-v105t1"></script>
+<script src="safe-write.js?v=tcl-v105t1"></script>
+<script src="sync-fast.js?v=tcl-v105t1"></script>
+<script src="gcal-bookings.js?v=tcl-v105t1"></script>
+<script src="nav.js?v=tcl-v105t1"></script>
+<script src="motion.js?v=tcl-v105t1"></script>
 </body>
 </html>
